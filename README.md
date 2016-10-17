@@ -1,8 +1,10 @@
 ![sxs](https://cloud.githubusercontent.com/assets/2102748/18841414/a912f0bc-83df-11e6-81ca-608ac62cac47.png) 
 
-[![NuGet version](https://img.shields.io/nuget/v/Honjo.svg?style=flat-square)](https://www.nuget.org/packages/signalx)
+[![NuGet version](https://badge.fury.io/nu/signalx.svg)](https://badge.fury.io/nu/signalx)
 
+[![npm version](https://badge.fury.io/js/signalx.svg)](https://badge.fury.io/js/signalx)
 
+[![Bower version](https://badge.fury.io/bo/signalx.svg)](https://badge.fury.io/bo/signalx)
 
 # SignalX
 Simplifying sigalr front and backend  setups
@@ -10,18 +12,48 @@ Simplifying sigalr front and backend  setups
 No more worrying about setup, cases, etc, just simple javascript to .NET lambda as a server
 
 
-Backend :-
+Backend (F#) :-
 
 	SignalX.Server("Sample",fun request -> request.Respond("response"))	
+	
+Backend (C#) :-
+
+	SignalX.Server("Sample",request => request.Respond("response"))	
+	
 	
 FrontEnd :-
     
     signalx.server.sample("Hey",function(response){ console.log(response);});
 
+	
+	
+Download the simple complete linqpad samples:
+
+Run linqpad as administrator to avoid getting exception such as  "Access to the path 'C:\Program Files (x86)\LINQPad5\index.html' is denied."
+
+https://signalx.github.io/LinqPadSamples/signalx_callback.linq
+
+https://signalx.github.io/LinqPadSamples/signalx_handler.linq
+
+https://signalx.github.io/LinqPadSamples/signalx_promise.linq
+
+https://signalx.github.io/LinqPadSamples/signalx_registering_server_on_client.linq
+	
+
+you can download linqpad here https://www.linqpad.net/
+
+	
+	
+only javascript jsfiddle:
+
+https://jsfiddle.net/sammie/dazes8j3/
+	
+	
+	
 MORE INFORMATION
 ==================================================================
 
-Backend :-
+Backend (F#) :-
 
     open System
     open Owin
@@ -30,13 +62,36 @@ Backend :-
     open Microsoft.Owin.Hosting
 	
     type public Startup() =
-        member x.Configuration (app:IAppBuilder) = app.UseSignalX( new SignalX("")) |> ignore
+        member x.Configuration (app:IAppBuilder) = app.UseSignalX( new SignalX()) |> ignore
 		
     [<EntryPoint>]
     let main argv = 
     let url="http://localhost:44111"
     use server=WebApp.Start<Startup>(url)
 	SignalX.Server("Sample",fun request -> request.Respond(request.ReplyTo))	
+	
+	
+
+Backend (C#) :-
+
+    public class Startup
+	{
+		public void Configuration(IAppBuilder app)
+		{
+			app.UseSignalX(new SignalX());
+		}
+	}
+	internal class Program
+	{
+		private static void Main(string[] args)
+		{
+			var url = "http://localhost:44111";
+			using (WebApp.Start<Startup>(url))
+			{
+			   SignalX.Server("Sample", (request) => request.Respond(request.ReplyTo));
+			}
+		}
+	}
 	
 FrontEnd :-
 	
@@ -45,7 +100,7 @@ Include scripts
 
       <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>     
       <script src="https://ajax.aspnetcdn.com/ajax/signalr/jquery.signalr-2.2.0.js"></script>
-      <script src="https://unpkg.com/signalx@0.1.0-pre"></script>
+      <script src="https://unpkg.com/signalx"></script>
 
 
 Report debug information
@@ -85,7 +140,7 @@ Return a promise
 
     var getSomethingCompletedPromise = signalx.server.sample("GetSomething");
  
-    getSomethingCompletedPromise.always(function (something) {
+    getSomethingCompletedPromise.done(function (something) {
         console.log(something);
     });
  
