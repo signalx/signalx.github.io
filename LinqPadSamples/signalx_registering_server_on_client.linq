@@ -1,10 +1,13 @@
 <Query Kind="Program">
   <NuGetReference Version="3.0.1">Microsoft.Owin.Host.HttpListener</NuGetReference>
   <NuGetReference Version="2.1.0">Microsoft.Owin.Hosting</NuGetReference>
-  <NuGetReference Prerelease="true">SignalX</NuGetReference>
+  <NuGetReference Version="2.3.0.0">Microsoft.AspNet.SignalR.Core</NuGetReference>
+  <NuGetReference Version="0.3.0-pre" Prerelease="true">SignalX</NuGetReference>
+  <NuGetReference Version="0.1.0-pre" Prerelease="true">SignalX.Extensions</NuGetReference>
   <Namespace>Microsoft.Owin.Hosting</Namespace>
   <Namespace>Owin</Namespace>
   <Namespace>SignalXLib.Lib</Namespace>
+  <Namespace>SignalXLib.Lib.Extensions</Namespace>
   <Namespace>System</Namespace>
   <Namespace>System.Threading.Tasks</Namespace>
 </Query>
@@ -13,7 +16,8 @@ public class Startup
 	{
 		public void Configuration(IAppBuilder app)
 		{
-			app.UseSignalX(new SignalX(""));
+			app.UseSignalX(new SignalX());
+			app.UseSignalXFileSystem();
 		}
 	}
 	internal class Program
