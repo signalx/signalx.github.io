@@ -16,7 +16,7 @@ public class Startup
 	{
 		public void Configuration(IAppBuilder app)
 		{
-			app.UseSignalX(new SignalX());
+			app.UseSignalX();
 			app.UseSignalXFileSystem();
 		}
 	}
